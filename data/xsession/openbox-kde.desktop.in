@@ -2,6 +2,6 @@
 Name=KDE/Openbox
 Comment=Use the Openbox window manager inside of the K Desktop Environment
 Exec=@bindir@/openbox-kde-session
-TryExec=startkde
+TryExec=/usr/bin/startplasma-x11
 Icon=openbox
 Type=Application

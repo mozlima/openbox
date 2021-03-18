@@ -38,6 +38,7 @@ struct _RrTheme {
     RrFont *osd_font_unhilite;
 
     /* style settings - geometry */
+    gint a_focused_title_height;
     gint paddingx;
     gint paddingy;
     gint handle_height;

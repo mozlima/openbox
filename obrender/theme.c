@@ -271,6 +271,7 @@ RrTheme* RrThemeNew(const RrInstance *inst, const gchar *name,
     READ_INT("menu.separator.padding.height", theme->menu_sep_paddingy, 0, 100, 3);
     READ_INT("window.client.padding.width", theme->cbwidthx, 0, 100, theme->paddingx);
     READ_INT("window.client.padding.height", theme->cbwidthy, 0, 100, theme->cbwidthx);
+    READ_INT("window.active.title.height", theme->a_focused_title_height, 0, 100, 30);
 
     /* load colors */
     READ_COLOR_("window.active.border.color",
@@ -975,14 +976,15 @@ RrTheme* RrThemeNew(const RrInstance *inst, const gchar *name,
            MAX(MAX(theme->padding * 2, ft + fb),
            MAX(theme->padding * 2, ut + ub));
         */
-        theme->title_height = theme->label_height + theme->paddingy * 2;
+        theme->title_height = theme->a_focused_title_height + theme->paddingy * 2;
+        theme->title_height = MAX(theme->title_height, theme->label_height);
 
         RrMargins(theme->a_menu_title, &ul, &ut, &ur, &ub);
         theme->menu_title_label_height = theme->menu_title_font_height+ut+ub;
         theme->menu_title_height = theme->menu_title_label_height +
             theme->paddingy * 2;
     }
-    theme->button_size = theme->label_height - 2;
+    theme->button_size = theme->title_height;
     theme->grip_width = 25;
 
     RrAppearanceFree(fbs.focused_disabled);
@@ -1494,8 +1496,10 @@ static void read_button_styles(XrmDatabase db, const RrInstance *inst,
     READ_BUTTON_MASK_COPY(disabled, btn->unpressed_mask);
     READ_BUTTON_MASK_COPY(hover, btn->unpressed_mask);
     if (toggled_mask) {
-        READ_BUTTON_MASK_COPY(pressed_toggled, btn->unpressed_toggled_mask);
-        READ_BUTTON_MASK_COPY(hover_toggled, btn->unpressed_toggled_mask);
+        g_snprintf(name, 128, "%s_toggled_pressed.xbm", btnname);
+        READ_MASK_COPY(name, btn->pressed_toggled_mask, btn->unpressed_toggled_mask);
+        g_snprintf(name, 128, "%s_toggled_hover.xbm", btnname);
+        READ_MASK_COPY(name, btn->hover_toggled_mask, btn->unpressed_toggled_mask);
     }
 
 #define READ_BUTTON_APPEARANCE(typedots, type, fallback) \
@@ -1532,8 +1536,8 @@ static void read_button_styles(XrmDatabase db, const RrInstance *inst,
     READ_BUTTON_APPEARANCE("disabled", disabled, 0);
     READ_BUTTON_APPEARANCE("hover", hover, 0);
     if (toggled_mask) {
-        READ_BUTTON_APPEARANCE("unpressed.toggled", unpressed_toggled, 1);
-        READ_BUTTON_APPEARANCE("pressed.toggled", pressed_toggled, 0);
-        READ_BUTTON_APPEARANCE("hover.toggled", hover_toggled, 0);
+        READ_BUTTON_APPEARANCE("toggled.unpressed", unpressed_toggled, 1);
+        READ_BUTTON_APPEARANCE("toggled.pressed", pressed_toggled, 0);
+        READ_BUTTON_APPEARANCE("toggled.hover", hover_toggled, 0);
     }
 }
