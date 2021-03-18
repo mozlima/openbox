@@ -374,8 +374,9 @@ static void framerender_icon(ObFrame *self, RrAppearance *a)
         a->texture[0].type = RR_TEXTURE_NONE;
     }
 
+    //fixme
     RrPaint(a, self->icon,
-            ob_rr_theme->button_size + 2, ob_rr_theme->button_size + 2);
+            ob_rr_theme->button_size / 1.4  , ob_rr_theme->button_size / 1.4);
 }
 
 static void framerender_max(ObFrame *self, RrAppearance *a)
