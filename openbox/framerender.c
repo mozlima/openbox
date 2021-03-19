@@ -365,18 +365,25 @@ static void framerender_icon(ObFrame *self, RrAppearance *a)
     icon = client_icon(self->client);
 
     if (icon) {
+        gint button_size = ob_rr_theme->button_size / 1.4;
         RrAppearanceClearTextures(a);
         a->texture[0].type = RR_TEXTURE_IMAGE;
         a->texture[0].data.image.alpha = 0xff;
         a->texture[0].data.image.image = icon;
+        a->texture[0].data.image.tx = ob_rr_theme->button_size - button_size;
+        a->texture[0].data.image.ty = ob_rr_theme->button_size - button_size;
+        a->texture[0].data.image.twidth = button_size;
+        a->texture[0].data.image.theight = button_size;
     } else {
         RrAppearanceClearTextures(a);
         a->texture[0].type = RR_TEXTURE_NONE;
     }
 
     //fixme
+    /*RrPaint(a, self->icon,
+            ob_rr_theme->button_size / 1.4  , ob_rr_theme->button_size / 1.4);*/
     RrPaint(a, self->icon,
-            ob_rr_theme->button_size / 1.4  , ob_rr_theme->button_size / 1.4);
+            ob_rr_theme->button_size   , ob_rr_theme->button_size );
 }
 
 static void framerender_max(ObFrame *self, RrAppearance *a)
