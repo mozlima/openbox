@@ -370,8 +370,8 @@ static void framerender_icon(ObFrame *self, RrAppearance *a)
         a->texture[0].type = RR_TEXTURE_IMAGE;
         a->texture[0].data.image.alpha = 0xff;
         a->texture[0].data.image.image = icon;
-        a->texture[0].data.image.tx = ob_rr_theme->button_size - button_size;
-        a->texture[0].data.image.ty = ob_rr_theme->button_size - button_size;
+       // a->texture[0].data.image.tx = ob_rr_theme->button_size - button_size;
+        //a->texture[0].data.image.ty = ob_rr_theme->button_size - button_size;
         a->texture[0].data.image.twidth = button_size;
         a->texture[0].data.image.theight = button_size;
     } else {
